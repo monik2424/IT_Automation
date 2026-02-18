@@ -1,0 +1,4 @@
+# api/requirements.txt
+fastapi
+uvicorn
+pydantic
