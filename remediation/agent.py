@@ -6,7 +6,7 @@ API_URL= "http://localhost:8000"
 
 while True:
     # get all the open tickets
-    response = response.get(f"{API_URL}/tickets")
+    response = requests.get(f"{API_URL}/tickets")
     tickets= response.json()
 
     for ticket_id, ticket in tickets.items():
