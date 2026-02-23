@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from datetime import datetime
-import json
+
 app = FastAPI()
 tickets = {}
 
@@ -11,7 +11,7 @@ class Ticket(BaseModel):
 
 class TicketUpdate(BaseModel):
     status: str
-    resolution_note str: ""
+    resolution_note: str= ""
 
 @app.post("/tickets")
 async def create_ticket(ticket: Ticket):
@@ -35,7 +35,8 @@ async def get_tickets():
 async def update_ticket(ticket_id:int, update: TicketUpdate):
     if ticket_id not in tickets:
         raise HTTPException(status_code=404, detail="Ticket not found")
-    ticket[ticket_id]["status"] = update.status
-    ticket[ticket_id]["resolution_note"] = update.resolution_note
-    ticket[ticket_id]["resolved_at"] = datetime.now().isoformat()
+    tickets[ticket_id]["status"] = update.status
+    tickets[ticket_id]["resolution_note"] = update.resolution_note
+    tickets[ticket_id]["resolved_at"] = datetime.now().isoformat()
+
     return {"ticket_id":ticket_id, "status":update.status}

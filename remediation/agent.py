@@ -46,6 +46,6 @@ while True:
                     )
                     logger.warning(f"Manual intervention needed for Ticket #{ticket_id}: {ticket['issue']}")
 
-    except requests.execptions.ConnectionError:
+    except requests.exceptions.ConnectionError:
         logger.error("Cannot reach API at %s - is uvicorn running?", API_URL)
     time.sleep(15)  # Check every 15 seconds
