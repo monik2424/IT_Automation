@@ -1,0 +1,21 @@
+=== IT Operations Standard Operating Procedures ===
+
+ISSUE: High CPU Usage
+CAUSE: Runaway process or memory leak.
+ACTION: Identify top process with 'top' command. Kill with 'kill -9 <pid>'. Monitor for 30 minutes.
+
+ISSUE: Disk Space Critical
+CAUSE: Log files, temp files, or large dumps accumulating.
+ACTION: Run 'du -sh /*' to find large directories. Clear /tmp and old logs in /var/log. Alert if over 90%.
+
+ISSUE: Apache / Service Down
+CAUSE: Crash due to config error, memory, or port conflict.
+ACTION: Check 'systemctl status apache2'. Review /var/log/apache2/error.log. Restart with 'systemctl restart apache2'.
+
+ISSUE: VPN Connection Timeout
+CAUSE: Expired certificate, misconfigured client, or firewall rule change.
+ACTION: Check VPN gateway logs. Verify SSL certificate expiry date. Confirm firewall allows UDP 1194. Restart VPN service.
+
+ISSUE: Unknown / Generic
+CAUSE: Unclear — needs investigation.
+ACTION: Collect logs from affected system. Escalate to Tier 2 with full log dump.
