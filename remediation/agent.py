@@ -2,6 +2,10 @@ import requests
 import time
 from actions import remediate
 import logging
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # --- Logging setup ---
 logging.basicConfig(
@@ -40,12 +44,15 @@ while True:
                     )
                     logger.info(f"Auto-resolved Ticket #{ticket_id}: {note}")
                 else:
+                    from triage.bot import triage_ticket
+                    ai_diagnosis = triage_ticket(ticket["issue"], ticket["source"])
                     requests.patch(
                         f"{API_URL}/tickets/{ticket_id}",
-                        json={"status": "needs_human", "resolution_note": "No automated handler found"}
+                        json={"status": "needs_human", "resolution_note": f"AI Diagnosis: {ai_diagnosis}"}
                     )
-                    logger.warning(f"Manual intervention needed for Ticket #{ticket_id}: {ticket['issue']}")
-
+                    logger.warning(
+                        f"Escalated Ticket #{ticket_id} with AI triage — {ticket['issue']}\n{ai_diagnosis}"
+                    )
     except requests.exceptions.ConnectionError:
         logger.error("Cannot reach API at %s - is uvicorn running?", API_URL)
     time.sleep(15)  # Check every 15 seconds
