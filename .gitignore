@@ -1,0 +1,4 @@
+.venv/
+.env
+auto_ops.log
+__pycache__/
